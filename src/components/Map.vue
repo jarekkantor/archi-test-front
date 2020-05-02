@@ -13,6 +13,27 @@
       <MglNavigationControl position="top-right" />
       <MglGeolocateControl position="top-right" />
       <MglScaleControl />
+
+      <div v-if="markers">
+      <MglMarker
+        v-for="(marker, index) in markers"
+        :key="index"
+        :coordinates="[ marker.Long, marker.Lat ]"
+        anchor="top"
+      >
+        <MglPopup>
+          <div>
+            <div><b>{{ marker.Title }} </b></div>
+            <div>{{ marker['Address'] }}</div>
+            <div>{{ marker['Suburb'] }}</div>
+
+            <div><b>Commence Date:</b> {{ marker['Commence Date'] }} </div>
+            <div><b>Completion Date:</b> {{ marker['Completion Date'] }} </div>
+            <div><b>Value:</b> {{ formatCurrency(marker['Value']) }} </div>
+          </div>
+        </MglPopup>
+      </MglMarker>
+      </div>
     </MglMap>
   </div>
 </template>
@@ -23,8 +44,10 @@ import {
   MglAttributionControl,
   MglGeolocateControl,
   MglMap,
+  MglMarker,
   MglNavigationControl,
   MglScaleControl,
+  MglPopup,
 } from 'vue-mapbox';
 
 export default {
@@ -35,22 +58,34 @@ export default {
     'mapStyle',
     'center',
     'zoom',
+    'markers',
   ],
   components: {
     MglMap,
+    MglMarker,
     MglAttributionControl,
     MglNavigationControl,
     MglGeolocateControl,
     MglScaleControl,
+    MglPopup,
   },
   data() {
     return {
       map: null,
+      formatter: new Intl.NumberFormat('en-US', {
+        currency: 'AUD',
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0,
+      }),
     };
   },
   created() {
     this.map = Mapbox;
-
+  },
+  methods: {
+    formatCurrency(value) {
+      return '$' + this.formatter.format(value);
+    },
   },
 };
 </script>

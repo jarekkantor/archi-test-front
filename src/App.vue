@@ -2,6 +2,7 @@
   <div id="#app" class="d-flex justify-content-center">
     <Sidebar
       :data="mapData"
+      @markersUpdated="markersUpdated"
     />
     <Map
       :data="mapData"
@@ -9,6 +10,7 @@
       :mapStyle="mapStyle"
       :center="mapCenter"
       :zoom="mapZoom"
+      :markers="mapMarkers"
     />
   </div>
 </template>
@@ -35,7 +37,13 @@ export default {
       ],
       mapZoom: 12,
       mapData: data,
+      mapMarkers: [],
     };
+  },
+  methods: {
+    markersUpdated(data) {
+      this.mapMarkers = data;
+    },
   },
 };
 </script>
@@ -43,6 +51,7 @@ export default {
 <style>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-size: 14px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
