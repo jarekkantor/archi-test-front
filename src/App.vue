@@ -32,14 +32,15 @@ export default {
       accessToken: config.accessToken,
       mapStyle: config.mapStyle,
       mapCenter: [
-        151.20819200,
-        -33.86626170,
+        151.210,
+        -33.870,
       ],
-      mapZoom: 12,
+      mapZoom: 14,
       mapData: data,
       mapMarkers: [],
     };
   },
+  // TODO: set mapCenter and mapZoom based on coordinates from data.json
   methods: {
     resultsUpdated(data) {
       this.mapMarkers = data;
