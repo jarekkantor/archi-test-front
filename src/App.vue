@@ -2,7 +2,7 @@
   <div id="#app" class="d-flex justify-content-center">
     <Sidebar
       :data="mapData"
-      @markersUpdated="markersUpdated"
+      @results="resultsUpdated"
     />
     <Map
       :data="mapData"
@@ -41,7 +41,7 @@ export default {
     };
   },
   methods: {
-    markersUpdated(data) {
+    resultsUpdated(data) {
       this.mapMarkers = data;
     },
   },
