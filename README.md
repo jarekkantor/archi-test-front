@@ -1,4 +1,4 @@
-# hello-jarek
+# Coding challenge for Sr Software Engineer (Frontend)/Technical Lead (UI and Graphics)
 
 ## Project setup
 ```
