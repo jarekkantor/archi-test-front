@@ -96,5 +96,11 @@ export default {
   max-height: 100%;
   width: 850px;
   max-width: 100%;
+
+  margin: 15px;
+  margin-left: 0;
+
+  border: 1px solid #eee;
+  border-left: none;
 }
 </style>

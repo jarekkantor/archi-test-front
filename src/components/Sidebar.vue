@@ -1,7 +1,11 @@
 <template>
   <div id="sidebar">
-    <h1>Filter By</h1>
+    <div class="filter-header">
+      <h1>Filter By</h1>
+      <a href="#" @click="resetAllFilters">Reset All</a>
+    </div>
     <div>
+      <!-- Category filter -->
       <b-form-group
         id="category-filter-group"
         :label="filters.category.name"
@@ -12,9 +16,14 @@
           v-model="filters.category.selected"
           :options="filters.category.values"
           @change="filterData"
-        />
+        >
+          <template v-slot:first>
+            <b-form-select-option value="" disabled>-- Please select --</b-form-select-option>
+          </template>
+        </b-form-select>
       </b-form-group>
 
+      <!-- Ownership filter -->
       <b-form-group
         id="ownership-filter-group"
         :label="filters.ownership.name"
@@ -22,6 +31,34 @@
         <b-form-checkbox-group
           v-model="filters.ownership.selected"
           :options="filters.ownership.values"
+          @input="filterData"
+          switches
+          stacked
+        ></b-form-checkbox-group>
+      </b-form-group>
+
+      <!-- Dev. Type filter -->
+      <b-form-group
+        id="dev_type-filter-group"
+        label="Development Type"
+      >
+        <b-form-checkbox-group
+          v-model="filters.dev_type.selected"
+          :options="filters.dev_type.values"
+          @input="filterData"
+          switches
+          stacked
+        ></b-form-checkbox-group>
+      </b-form-group>
+
+      <!-- Status filter -->
+      <b-form-group
+        id="status-filter-group"
+        :label="filters.status.name"
+      >
+        <b-form-checkbox-group
+          v-model="filters.status.selected"
+          :options="filters.status.values"
           @input="filterData"
           switches
           stacked
@@ -43,12 +80,22 @@ export default {
       filters: {
         category: {
           name: 'Category',
-          selected: null,
+          selected: '',
           values: [],
         },
         ownership: {
           name: 'Ownership',
-          selected: null,
+          selected: [],
+          values: [],
+        },
+        dev_type: {
+          name: 'Dev. Type',
+          selected: [],
+          values: [],
+        },
+        status: {
+          name: 'Status',
+          selected: [],
           values: [],
         },
       },
@@ -72,7 +119,21 @@ export default {
           data[filter][feature.properties.project[this.filters[filter].name].toLowerCase()] = 1;
         });
       });
-      filters.map(filter => this.filters[filter].values = Object.keys(data[filter]));
+      filters.map(filter => {
+        console.log(`Values loaded for ${filter} filter.`);
+        this.filters[filter].values = Object.keys(data[filter]);
+      });
+    },
+
+    /**
+     * Reset all filters
+     */
+    resetAllFilters(event) {
+      event.preventDefault();
+      Object.keys(this.filters).map(filter => {
+        console.log(`Filter ${filter} reset.`);
+        this.filters[filter].selected = Array.isArray(this.filters[filter].selected) ? [] : '';
+      });
     },
 
     /**
@@ -88,6 +149,12 @@ export default {
       });
       // Return only 'project' properties
       results = results.map(marker => marker.properties.project);
+
+      // Return no results when none of the filters has been selected
+      let selected = Object.keys(this.filters).filter(filter => this.filters[filter].selected.length);
+      if (results.length === this.data.features.length && selected.length === 0) {
+        results = [];
+      }
 
       this.$emit('results', results);
     },
@@ -128,14 +195,47 @@ export default {
 <style lang="scss">
 #sidebar {
   width: 250px;
-  margin: 0 15px;
+  margin: 15px;
+  margin-right: 0;
+  padding: 15px 20px;
+
+  border: 1px solid #eee;
+  border-right: none;
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+
+  .filter-header {
+    position: relative;
+
+    h1 {
+      font-size: 22px;
+      border-bottom: 1px solid #eee;
+      margin-bottom: 15px;
+    }
+
+    a {
+      position: absolute;
+      top: 0;
+      right: 0;
+      cursor: pointer;
+    }
+  }
+
+  label,
+  legend {
+    font-weight: bold;
+  }
 
   select {
     text-transform: capitalize;
   }
-  #ownership-filter-group {
+  #ownership-filter-group,
+  #dev_type-filter-group,
+  #status-filter-group {
     label {
+      font-weight: normal;
       text-transform: capitalize;
+      cursor: pointer;
     }
   }
 }

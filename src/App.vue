@@ -1,5 +1,5 @@
 <template>
-  <div id="#app" class="d-flex justify-content-center">
+  <div id="app" class="d-flex justify-content-center">
     <Sidebar
       :data="mapData"
       @results="resultsUpdated"
@@ -54,8 +54,5 @@ export default {
   font-size: 14px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
 }
 </style>
