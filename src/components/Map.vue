@@ -7,12 +7,9 @@
       :center="center"
       :zoom="zoom"
     >
-      <MglAttributionControl />
-      <MglNavigationControl position="top-right" />
-      <MglGeolocateControl position="top-right" />
-      <MglNavigationControl position="top-right" />
-      <MglGeolocateControl position="top-right" />
-      <MglScaleControl />
+<!--      <MglGeolocateControl position="bottom-right" />-->
+      <MglScaleControl position="bottom-right" />
+      <MglNavigationControl position="bottom-right" />
 
       <div v-if="markers">
       <MglMarker
@@ -41,8 +38,7 @@
 <script>
 import Mapbox from 'mapbox-gl';
 import {
-  MglAttributionControl,
-  MglGeolocateControl,
+  // MglGeolocateControl,
   MglMap,
   MglMarker,
   MglNavigationControl,
@@ -63,9 +59,8 @@ export default {
   components: {
     MglMap,
     MglMarker,
-    MglAttributionControl,
     MglNavigationControl,
-    MglGeolocateControl,
+    // MglGeolocateControl,
     MglScaleControl,
     MglPopup,
   },
