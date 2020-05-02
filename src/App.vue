@@ -1,19 +1,43 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div id="#app" class="d-flex justify-content-center">
+    <Sidebar
+      :data="mapData"
+    />
+    <Map
+      :data="mapData"
+      :accessToken="accessToken"
+      :mapStyle="mapStyle"
+      :center="mapCenter"
+      :zoom="mapZoom"
+    />
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Sidebar from './components/Sidebar';
+import Map from './components/Map';
+import data from './assets/data.json';
+import { config } from './consts';
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
-  }
-}
+    Sidebar,
+    Map,
+  },
+  data() {
+    return {
+      accessToken: config.accessToken,
+      mapStyle: config.mapStyle,
+      mapCenter: [
+        151.20819200,
+        -33.86626170,
+      ],
+      mapZoom: 12,
+      mapData: data,
+    };
+  },
+};
 </script>
 
 <style>
