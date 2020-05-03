@@ -70,10 +70,18 @@
 </template>
 
 <script>
+import { BFormGroup, BFormSelect, BFormSelectOption, BFormCheckboxGroup } from 'bootstrap-vue';
+
 export default {
   name: 'Sidebar',
   props: {
     data: {},
+  },
+  components: {
+    'b-form-group': BFormGroup,
+    'b-form-select': BFormSelect,
+    'b-form-select-option': BFormSelectOption,
+    'b-form-checkbox-group': BFormCheckboxGroup,
   },
   data() {
     return {
@@ -113,16 +121,18 @@ export default {
       const filters = Object.keys(this.filters);
 
       // Take unique values for each filter and convert them to lower-case
-      filters.map(filter => {
-        data[filter] = {};
-        this.data.features.map(feature => {
-          data[filter][feature.properties.project[this.filters[filter].name].toLowerCase()] = 1;
+      if (this.data) {
+        filters.map(filter => {
+          data[filter] = {};
+          this.data.map(feature => {
+            data[filter][feature.properties.project[this.filters[filter].name].toLowerCase()] = 1;
+          });
         });
-      });
-      filters.map(filter => {
-        console.log(`Values loaded for ${filter} filter.`);
-        this.filters[filter].values = Object.keys(data[filter]);
-      });
+        filters.map(filter => {
+          console.log(`Values loaded for ${filter} filter.`);
+          this.filters[filter].values = Object.keys(data[filter]);
+        });
+      }
     },
 
     /**
@@ -142,7 +152,7 @@ export default {
      * Emits filtered results as 'results'
      */
     filterData() {
-      let results = this.data.features;
+      let results = this.data;
 
       Object.keys(this.filters).map(filter => {
         results = this.filterBy(results, filter);
@@ -152,10 +162,11 @@ export default {
 
       // Return no results when none of the filters has been selected
       let selected = Object.keys(this.filters).filter(filter => this.filters[filter].selected.length);
-      if (results.length === this.data.features.length && selected.length === 0) {
+      if (results.length === this.data.length && selected.length === 0) {
         results = [];
       }
 
+      console.log('filtered results', results);
       this.$emit('results', results);
     },
 

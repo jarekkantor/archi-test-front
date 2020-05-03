@@ -36,7 +36,7 @@ export default {
         -33.870,
       ],
       mapZoom: 14,
-      mapData: data,
+      mapData: data.features,
       mapMarkers: [],
     };
   },
